@@ -1,0 +1,68 @@
+package scurbiriscv.frontend.ignore
+
+import spinal.core._
+import spinal.lib._
+import spinal.core.fiber.Retainer
+import spinal.lib.misc.plugin.FiberPlugin
+import scala.collection.mutable.ArrayBuffer
+
+object FetchCacheless {
+  val ID_WIDTH = Int
+  val ID = Int
+}
+
+
+
+class FetchCacheless(var wordWidth : Int = 32,
+                     var addressAt : Int = 0,
+                     // Physical Memory Attribute (checks at stage)
+                     var pmaAt : Int = 0
+                     ) extends Area {
+                    
+  // val regions = Handle[ArrayBuffer[PmaRegion]]()
+  
+  val logic = new Area {
+    val pp = host[FetchPipelinePlugin]
+    val ts = host{TrapService}
+    val ats = host[AddressTranslationSerice]
+    
+    Fetch.WORD_WIDTH.set(wordWidth)
+
+    val trapPort = ts.newTrap(pp.getAge(joinAt), 0)
+
+    
+
+    val idCount = 1
+    val p = CachelessBusParam()
+    val bus = master(CachelessBus(p))
+
+    val BUFFER_ID = Payload(log2Up(idCount) bits)
+
+    val buffer = new Area {
+      val reserveId = Counter(idCount)
+      val inflight = Vec.fill(idCount)(RegInit(False))
+      val words = Mem.fill(idCount)(CachelessRsp()) 
+      val write = words.writePort()
+      val reservedHits = for (ctrlId <- forkAt+1 to joinAt; ctrl = pp.fetch(ctrlId)) yield {
+        ctrl.isValid && ctrl(BUFFER_ID) === reserveId
+      }
+      val full = CombInit(reservedHits.orR || inflight.read(reserveId))
+      
+      val inflightSpawn = Bool()
+      when(inflightSpawn) {
+        inflight(reserveId) := True
+      }
+
+      write.valid := False
+      write.address := bus.rsp.id
+      write.data.assignSomeByName(bus.rsp.payload)
+      when(bus.rsp.valid) {
+        write.valid := True
+        inflight(bus.rsp.id) := False
+      }
+    }
+    
+    val onAddress = new pp.Fetch(addressAt)
+    
+  }
+}

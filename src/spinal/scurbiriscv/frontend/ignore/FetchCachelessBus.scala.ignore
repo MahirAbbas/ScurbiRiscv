@@ -1,0 +1,25 @@
+package scurbiriscv.frontend.ignore
+
+import spinal.core._
+import spinal.lib._
+
+case class CachelessCmd() extends Bundle {
+  // val id = UInt()
+  val address = UInt(64 bits)
+}
+
+case class CachelessRsp() extends Bundle {
+  val error = Bool()
+  val word = Bits(64 bits)
+}
+
+case class CachelessBus() extends Bundle with IMasterSlave {
+  val cmd = Stream(CachelessCmd())
+  val rsp = Flow(CachelessRsp())
+
+  override def asMaster(): Unit = {
+    master(cmd)
+    slave(rsp)
+  }
+}
+
