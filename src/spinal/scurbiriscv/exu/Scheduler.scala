@@ -27,3 +27,5 @@ import scurbiriscv.frontend.InstructionPacket
   
 // }
 
+
+// TODO: NODE.ARBITRATEFROM/TO

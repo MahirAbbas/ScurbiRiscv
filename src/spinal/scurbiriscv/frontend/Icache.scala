@@ -2,6 +2,7 @@ package scurbiriscv.frontend
 
 import spinal.core._
 import spinal.lib._
+import spinal.lib.misc.pipeline._
 
 
 case class DataLoadCmd() extends Bundle {
@@ -30,8 +31,10 @@ class ICache() extends Area {
   val io = new Bundle {
     
   }
+
+  val icacheNode = Node()
   
-  val logic = new Area {
+  val logic = new icacheNode.Area {
     
     val cacheSize = ???
     val cpuWordWidth = ???

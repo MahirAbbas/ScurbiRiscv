@@ -34,4 +34,6 @@ case class IMM(instruction : Bits) extends Area {
   def s_sext = S(s).resize(Riscv.XLEN)
   def b_sext = S(b ## False).resize(Riscv.XLEN)
   def j_sext = S(j ## False).resize(Riscv.XLEN)
+  // def b_sext = S(b ## False)
+  // def j_sext = S(j ## False)
 }

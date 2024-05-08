@@ -9,9 +9,11 @@ object Riscv extends AreaObject {
 object Rv32i extends AreaObject {
   val LUI                = M"-------------------------0110111"
   val AUIPC              = M"-------------------------0010111"
-
+  //I-Type
   val JALR               =  M"-----------------000-----1100111"
+  //J-Type
   val JAL                =  M"-------------------------1101111"
+  //B-Type
   val BEQ                =  M"-----------------000-----1100011"
   val BNE                =  M"-----------------001-----1100011"
   val BLT                =  M"-----------------100-----1100011"

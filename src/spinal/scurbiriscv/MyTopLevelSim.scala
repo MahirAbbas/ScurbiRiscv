@@ -1,9 +1,11 @@
 
-import spinal.core._
-import spinal.core.sim._
+// import spinal.core._
+// import spinal.core.sim._
+// import scurbiriscv.ScurbiRiscV
+// import scurbiriscv.frontend.Decode._
 
 // object MyTopLevelSim extends App {
-//   Config.sim.compile(MyTopLevel()).doSim { dut =>
+//   Config.sim.compile(ScurbiRiscV()).doSim { dut =>
 //     // Fork a process to generate the reset and the clock on the dut
 //     dut.clockDomain.forkStimulus(period = 10)
 
@@ -13,6 +15,8 @@ import spinal.core.sim._
 //       dut.io.cond0.randomize()
 //       dut.io.cond1.randomize()
 
+//       // dut.INSTRUCTION #= M""
+//       // dut.decode.INSTRUCTION 
 //       // Wait a rising edge on the clock
 //       dut.clockDomain.waitRisingEdge()
 

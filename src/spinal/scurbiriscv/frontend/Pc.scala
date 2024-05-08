@@ -15,16 +15,15 @@ case class Pc() extends Component {
   // val PC_NEXT = Payload(UInt(Riscv.XLEN bits))
   
 
+  val pcNode = Node()
   
-  val logic = new Area {
+  val logic = new pcNode.Area {
 
     val jump = new Area {
       val pcLoad = Flow(JumpCmd())
-      
     }
 
     val fetchPc = new Area {
-      val output = Stream(PC)
       val pc = (UInt(Riscv.XLEN bits)) 
       val pcReg = Reg(PC) 
       
@@ -33,21 +32,7 @@ case class Pc() extends Component {
       when(jump.pcLoad.valid) {
         pc := jump.pcLoad.pc
       }
-
-      when(output.ready) {
-        pcReg := pc
-      }
-      
-      val fetcherHalt = False 
-      output.valid := !fetcherHalt
-      output.payload := pc
+      PC := pcReg
     }
-    
-    fetchPc.output.ready := Node().ready
-    Node().valid := fetchPc.output.valid
-    
-    
-
   }
-
 }
