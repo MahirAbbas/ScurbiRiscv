@@ -4,7 +4,7 @@ import spinal.core._
 
 
 
-class Branch() extends Component {
+class BranchUnit() extends Component {
   val io = new Bundle {
     val rs1 = in port Bits(32 bits)
     val rs2 = in port Bits(32 bits)

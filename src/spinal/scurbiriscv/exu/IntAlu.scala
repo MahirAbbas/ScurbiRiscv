@@ -18,6 +18,8 @@ case class IntAlu() extends Component {
     val alu_result = out port Bits(32 bits)
     val alu_ctrl = AluCtrl()
     val src1, src2 = in port Bits(32 bits)
+    val funct3 = in port Bits(3 bits)
+    val funct7 = in port Bits(7 bits)
   }
   
 

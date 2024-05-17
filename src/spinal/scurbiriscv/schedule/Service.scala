@@ -2,7 +2,7 @@ package scurbiriscv.schedule
 
 import spinal.core._
 import spinal.lib._
-import scurbiriscv.decode._
+// import scurbiriscv.decode._
 import scurbiriscv.Global._
 
 
